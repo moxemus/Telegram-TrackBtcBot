@@ -15,22 +15,25 @@ final class  Telegram
     static private $red_smile = "\xF0\x9F\x94\xBB";
 
     //Send new message to chat
-    static function sendMessage($chatID, $text)
+    static function trySendMessage($chatID, $text)
     {
-        $info = self::$url_telegram . self::$token_telegram . "/sendMessage?chat_id=" . $chatID;
-        $info = $info . "&text=" . urlencode($text);
-        $ch = curl_init();
+        try {
+            $info = self::$url_telegram . self::$token_telegram . "/sendMessage?chat_id=" . $chatID;
+            $info = $info . "&text=" . urlencode($text);
+            $ch = curl_init();
 
-        $optArray = array(
-            CURLOPT_URL => $info,
-            CURLOPT_RETURNTRANSFER => true
-        );
+            $optArray = array(
+                CURLOPT_URL => $info,
+                CURLOPT_RETURNTRANSFER => true
+            );
 
-        curl_setopt_array($ch, $optArray);
-        $result = curl_exec($ch);
-        curl_close($ch);
+            curl_setopt_array($ch, $optArray);
+            curl_exec($ch);
+            curl_close($ch);
 
-        return $result;
+        } catch (Throwable $exception) {
+
+        }
     }
 
     //Get all last actions with bot
@@ -56,9 +59,11 @@ final class  Telegram
     {
         $updates = self::getUpdates();
 
+        //Just try to insert all users in table
+        //If user with this ID already exist in DB - nothing will happen
         foreach ($updates as $update) {
             $id = $update['message']['chat']['id'];
-            Members::save($id);
+            Members::trySave($id);
         }
     }
 
@@ -69,15 +74,17 @@ final class  Telegram
 
         $members = Members::getUsers();
 
+        if (!isset($members) || count($members) == 0) return;
+
         $current_rate = (int)self::getRate();
         $last_rate = (int)Rates::getLast();
 
         $smile = ($current_rate >= $last_rate) ? self::$green_smile : self::$red_smile;
 
         foreach ($members as $member) {
-            self::sendMessage($member['id'], $current_rate . $smile);
+            self::trySendMessage($member['id'], $current_rate . $smile);
         }
 
-        Rates::save($current_rate);
+        Rates::trySave($current_rate);
     }
 }

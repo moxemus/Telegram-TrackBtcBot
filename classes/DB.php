@@ -2,40 +2,41 @@
 
 final class DB
 {
-    static protected PDO $dbh;
+    static private PDO $dbh;
 
-    static protected $host = 'localhost';
-    static protected $dbname = 'telegram';
-    static protected $user = 'root';
-    static protected $password = 'root';
+    static private $host = 'localhost';
+    static private $dbname = 'telegram';
+    static private $user = 'root';
+    static private $password = 'root';
 
 
-    static public function connect()
+    static private function connect()
     {
-        DB::$dbh = new PDO('mysql:host=' . DB::$host . ';dbname=' . DB::$dbname, DB::$user, DB::$password);
+        if (!isset(self::$dbh))
+            self::$dbh = new PDO('mysql:host=' . DB::$host . ';dbname=' . DB::$dbname, DB::$user, DB::$password);
     }
 
     static public function query($sql)
     {
-        DB::connect();
+        self::connect();
 
-        $stmt = DB::$dbh->query($sql, PDO::FETCH_ASSOC);
-        return $stmt->fetchAll();
+        return self::$dbh->query($sql, PDO::FETCH_ASSOC)
+            ->fetchAll();
     }
 
     static public function queryOne($sql)
     {
-        DB::connect();
+        self::connect();
 
-        return DB::$dbh->query($sql, PDO::FETCH_ASSOC)
+        return self::$dbh->query($sql, PDO::FETCH_ASSOC)
             ->fetch(PDO::FETCH_OBJ)->val;
     }
 
     static public function save($sql)
     {
-        DB::connect();
+        self::connect();
 
-        DB::$dbh->prepare($sql);
-        DB::$dbh->exec($sql);
+        self::$dbh->prepare($sql);
+        self::$dbh->exec($sql);
     }
 }
