@@ -6,7 +6,7 @@ require_once 'models/Rates.php';
 final class  Telegram
 {
     static private string $url_telegram   = 'https://api.telegram.org/bot';
-    static private string $token_telegram = '1676214376:AAFPrR7Y8y0mJzvltQt0SQZKs-QOjiFzzLE';
+    static private string $token_telegram = 'your-telegram-token';
 
     static private string $url_btc = 'https://blockchain.info/ticker';
 
