@@ -5,7 +5,7 @@ For example, I set up my CRON to run index.php with param "mailing" every hour a
 I used only Telegram official API to manage the bot and free crypto exchange API for getting BTC rate.
 
 You can modify this project or make your own based on it.<br/>
-To start this service you need to create your own Telegram bot token and api.nomics.com token.
+To start this service you need to create your own Telegram bot token.
 
 To check how it works - [`@TrackBtcBot`](https://t.me/trackbtcbot)
     
