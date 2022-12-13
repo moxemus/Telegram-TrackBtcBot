@@ -4,11 +4,13 @@ require_once 'classes/DB.php';
 
 final class Members
 {
-    static public function trySave($id)
+    static public function save($id)
     {
-        try {
+        try
+        {
             DB::save("INSERT INTO users (id) values ({$id})");
-        } catch (Throwable $exception) {
+        }
+        catch (Throwable $exception) {
         }
     }
 
