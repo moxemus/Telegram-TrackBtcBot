@@ -82,7 +82,7 @@ final class  Telegram
         Rates::save($current_rate);
     }
 
-    static public function senMessage($chatID, $text)
+    static public function senMessage(int $chatID, string $text)
     {
         try {
             $info = self::$url_telegram . self::$token_telegram . "/sendMessage?chat_id=" . $chatID;

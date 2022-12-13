@@ -4,10 +4,9 @@ require_once 'classes/DB.php';
 
 final class Rates
 {
-    static public function save($value)
+    static public function save(int $value)
     {
-        try
-        {
+        try {
             DB::save("UPDATE rates set val = {$value}");
         } catch (Throwable $exception) {
         }
